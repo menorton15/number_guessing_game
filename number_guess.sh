@@ -20,4 +20,40 @@ else
   done
 fi
 
+echo -e " \nGuess the secret number between 1 and 1000:"
+
+COUNT=0
+
+read GUESS
+
+while [[ ! $GUESS == $NUMBER ]]
+do
+
+  COUNT=($COUNT + 1)
+
+  while [[ ! $GUESS =~ ^[0-9]+$ ]]
+  do
+    echo -e "\nThat is not an integer, guess again:"
+
+    read GUESS
+  done 
+
+  if [[ $GUESS > $NUMBER ]]
+  then
+    echo -e "\nIt's lower than that, guess again:"
+    read GUESS
+  else if [[ $GUESS < $NUMBER ]]
+  then
+    echo -e "\nIt's higher than that, guess again:"
+    read GUESS
+  else
+    if [[ $COUNT < $BEST_GAME ]]
+    then
+      BEST_GAME=$COUNT
+    fi
+    echo -e "\nYou guessed it in $COUNT tries. The secret number was $NUMBER. Nice job!"
+
+    UPDATE_USER_DATA=$($PSQL "UPDATE users SET games_played = (games_played + 1), best_game = $BEST_GAME WHERE username = '$USERNAME'")
+  fi
+done
 
