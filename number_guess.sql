@@ -51,7 +51,7 @@ CREATE TABLE public.users (
     user_id integer NOT NULL,
     username character varying(30) NOT NULL,
     games_played integer DEFAULT 0 NOT NULL,
-    best_game integer
+    best_game integer DEFAULT 9999 NOT NULL
 );
 
 
